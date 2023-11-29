@@ -1,0 +1,7 @@
+marvel:
+  api:
+    public-key: e475c37c6a576273499f293f512255f1
+    private-key: 2c376e648d25dc7fd9239b90ceea730d9d503572
+    endpoint:
+      base-url: https://gateway.marvel.com:443/v1/public
+      characters: /characters
