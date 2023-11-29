@@ -1,0 +1,26 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-boot-marvel
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:~/marvel;INIT=CREATE SCHEMA IF NOT EXISTS LOG
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+marvel:
+  api:
+    public-key: e475c37c6a576273499f293f512255f1
+    private-key: 2c376e648d25dc7fd9239b90ceea730d9d503572
+    endpoint:
+      base-url: https://gateway.marvel.com:443/v1/public
+      characters: /characters
