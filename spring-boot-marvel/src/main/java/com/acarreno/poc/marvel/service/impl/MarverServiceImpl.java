@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import com.acarreno.poc.marvel.integration.client.MarvelIntegrationClient;
 import com.acarreno.poc.marvel.integration.model.CharacterDataWrapper;
-import com.acarreno.poc.marvel.integration.service.MarvelIntegration;
 import com.acarreno.poc.marvel.model.Hero;
 import com.acarreno.poc.marvel.model.HeroDetail;
 import com.acarreno.poc.marvel.model.Item;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MarverServiceImpl implements MarverService {
 
-  private final MarvelIntegration marvelIntegration;
+  private final MarvelIntegrationClient marvelIntegrationClient;
   private final AuditServiceRepository auditServiceRepository;
 
   @Override
@@ -32,7 +32,7 @@ public class MarverServiceImpl implements MarverService {
 
     try {
 
-      CharacterDataWrapper response = marvelIntegration.getCharacters();
+      CharacterDataWrapper response = marvelIntegrationClient.getCharacters();
 
       if (response != null && response.getCode() == HttpStatus.OK.value()
           && !response.getData().getResults().isEmpty()) {
@@ -43,6 +43,8 @@ public class MarverServiceImpl implements MarverService {
 
         marvelResponseType = MarvelResponseType.SUCCESSFULLY;
 
+      } else {
+        marvelResponseType = MarvelResponseType.UNSUCCESSFULLY;
       }
 
       return heroes;
@@ -69,24 +71,40 @@ public class MarverServiceImpl implements MarverService {
 
     try {
 
-      CharacterDataWrapper response = marvelIntegration.getCharacterById(id);
+      CharacterDataWrapper response = marvelIntegrationClient.getCharacterById(id);
 
       if (response != null && response.getCode() == HttpStatus.OK.value()
           && !response.getData().getResults().isEmpty()) {
 
         marvelResponseType = MarvelResponseType.SUCCESSFULLY;
-        com.acarreno.poc.marvel.integration.model.Character character = response.getData().getResults().get(0);
+        com.acarreno.poc.marvel.integration.model.Character character =
+            response.getData().getResults().get(0);
 
-        heroDetail = HeroDetail.builder()
-            .name(character.getName())
+        heroDetail = HeroDetail.builder().name(character.getName())
             .description(character.getDescription())
-            .imageUrl(character.getThumbnail().getPath() + "." + character.getThumbnail().getExtension())
-            .comics(character.getComics().getItems().stream().map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI()).build()).collect(Collectors.toList()))
-            .series(character.getSeries().getItems().stream().map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI()).build()).collect(Collectors.toList()))
-            .stories(character.getStories().getItems().stream().map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI()).build()).collect(Collectors.toList()))
-            .events(character.getEvents().getItems().stream().map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI()).build()).collect(Collectors.toList()))
+            .imageUrl(
+                character.getThumbnail().getPath() + "." + character.getThumbnail().getExtension())
+            .comics(character.getComics().getItems().stream()
+                .map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI())
+                    .build())
+                .collect(Collectors.toList()))
+            .series(character.getSeries().getItems().stream()
+                .map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI())
+                    .build())
+                .collect(Collectors.toList()))
+            .stories(character.getStories().getItems().stream()
+                .map(item -> Item.builder().name(item.getName()).resourceURI(item.getResourceURI())
+                    .build())
+                .collect(Collectors.toList()))
+            .events(
+                character.getEvents().getItems().stream()
+                    .map(item -> Item.builder().name(item.getName())
+                        .resourceURI(item.getResourceURI()).build())
+                    .collect(Collectors.toList()))
             .build();
 
+      } else {
+        marvelResponseType = MarvelResponseType.UNSUCCESSFULLY;
       }
 
     } catch (Exception e) {

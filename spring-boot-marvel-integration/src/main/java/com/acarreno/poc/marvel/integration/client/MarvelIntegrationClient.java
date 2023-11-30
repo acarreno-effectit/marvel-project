@@ -1,8 +1,8 @@
-package com.acarreno.poc.marvel.integration.service;
+package com.acarreno.poc.marvel.integration.client;
 
 import com.acarreno.poc.marvel.integration.model.CharacterDataWrapper;
 
-public interface MarvelIntegration {
+public interface MarvelIntegrationClient {
 
   CharacterDataWrapper getCharacters();
 

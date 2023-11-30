@@ -1,18 +1,19 @@
-package com.acarreno.poc.marvel.integration.service.impl;
+package com.acarreno.poc.marvel.integration.client.impl;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
+import com.acarreno.poc.marvel.integration.client.MarvelIntegrationClient;
 import com.acarreno.poc.marvel.integration.model.CharacterDataWrapper;
-import com.acarreno.poc.marvel.integration.service.MarvelIntegration;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MarvelIntegrationImpl implements MarvelIntegration {
+public class MarvelIntegrationClientImpl implements MarvelIntegrationClient {
 
   private WebClient webClient;
   private final Builder webClientBuilder;
@@ -32,37 +33,48 @@ public class MarvelIntegrationImpl implements MarvelIntegration {
   @Override
   public CharacterDataWrapper getCharacters() {
 
-    webClient = webClientBuilder.baseUrl(baseUrl).build();
+    try {
 
-    long timestamp = System.currentTimeMillis();
+      webClient = webClientBuilder.baseUrl(baseUrl).build();
 
-    CharacterDataWrapper responseBody = webClient.get()
-        .uri(uriBuilder -> uriBuilder.path(endpointCharacters)
-            .queryParam("apikey", publicKey)
-            .queryParam("hash", getMD5Hash(timestamp))
-            .queryParam("ts", timestamp)
-            .queryParam("limit", 50)
-            .build())
-        .retrieve().bodyToMono(CharacterDataWrapper.class).block();
+      long timestamp = System.currentTimeMillis();
 
-    return responseBody;
+      CharacterDataWrapper responseBody = webClient.get()
+          .uri(uriBuilder -> uriBuilder.path(endpointCharacters).queryParam("apikey", publicKey)
+              .queryParam("hash", getMD5Hash(timestamp)).queryParam("ts", timestamp)
+              .queryParam("limit", 50).build())
+          .retrieve().bodyToMono(CharacterDataWrapper.class).block();
+
+      return responseBody;
+
+    } catch (Exception e) {
+      throw new RuntimeErrorException(new Error(e.getCause()),
+          "Error intentando consultar lista de heroes");
+    }
+
   }
 
   @Override
   public CharacterDataWrapper getCharacterById(int id) {
-    
-    webClient = webClientBuilder.baseUrl(baseUrl).build();
 
-    long timestamp = System.currentTimeMillis();
+    try {
 
-    CharacterDataWrapper responseBody = webClient.get()
-        .uri(uriBuilder -> uriBuilder.path(endpointCharacters + "/" + id)
-            .queryParam("apikey", publicKey)
-            .queryParam("hash", getMD5Hash(timestamp))
-            .queryParam("ts", timestamp).build())
-        .retrieve().bodyToMono(CharacterDataWrapper.class).block();
+      webClient = webClientBuilder.baseUrl(baseUrl).build();
 
-    return responseBody;
+      long timestamp = System.currentTimeMillis();
+
+      CharacterDataWrapper responseBody = webClient.get()
+          .uri(uriBuilder -> uriBuilder.path(endpointCharacters + "/" + id)
+              .queryParam("apikey", publicKey).queryParam("hash", getMD5Hash(timestamp))
+              .queryParam("ts", timestamp).build())
+          .retrieve().bodyToMono(CharacterDataWrapper.class).block();
+
+      return responseBody;
+
+    } catch (Exception e) {
+      throw new RuntimeErrorException(new Error(e.getCause()),
+          "Error intentando consultar heroe por ID");
+    }
   }
 
 
