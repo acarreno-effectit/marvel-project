@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +14,10 @@ import com.acarreno.poc.marvel.model.HeroDetail;
 import com.acarreno.poc.marvel.service.MarverService;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/api/marvel")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MarvelController {
 
   private final MarverService marverService;
