@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="box">
+        <div class="title">
+            <p>Seleccionar una Opción</p>
+        </div>
+        <div class="container-buttons">
+            <div class="button">
+
+                <button mat-button color="primary" (click)="redirect('/heroes')" [disabled]="false">
+                    <mat-icon>input</mat-icon>
+                    Consulta de Heroes
+                </button>
+
+            </div>
+
+            <div class="button">
+
+                <button mat-button color="primary" (click)="redirect('/logs')" [disabled]="false">
+                    <mat-icon>find_in_page</mat-icon>
+                    Logs de Servicios
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>

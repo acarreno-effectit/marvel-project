@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="column"><img src="{{data.imageUrl}}" class="image"></div>
+    <div class="column padding">
+        <div class="row">
+            <div class="column">
+                <h1>{{ data.name }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <h3>{{ data.description }}</h3>
+            </div>
+        </div>
+    </div>  
+</div>
+
+<button mat-button color="primary" (click)="close()" [disabled]="false">
+    <mat-icon>keyboard_backspace</mat-icon>
+    Cerrar
+</button>

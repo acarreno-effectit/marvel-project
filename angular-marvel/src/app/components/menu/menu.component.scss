@@ -1,0 +1,28 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  box-shadow: 5px 5px 10px #888888;
+  border-radius: 5px;
+  padding: 50px;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Roboto;
+  font-size: 25px;
+  margin: 30px;
+}
+
+.container-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

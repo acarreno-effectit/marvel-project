@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 !**/target/generated-sources/annotations/
+!**/node_modules/
+!**/.angular/
 
 ### STS ###
 .apt_generated
@@ -32,6 +34,7 @@ build/
 
 ### VS Code ###
 .vscode/
+.editorconfig
 
 .mvn/*
 

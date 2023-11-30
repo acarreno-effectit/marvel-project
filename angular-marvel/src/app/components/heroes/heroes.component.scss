@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table {
+    width: 60vw;
+}
+
+.row-table:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.row-header {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
